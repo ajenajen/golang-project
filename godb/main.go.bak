@@ -1,0 +1,157 @@
+package main
+
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+type Cover struct {
+	Id   int
+	Name string
+}
+
+var db *sql.DB //Global db
+
+func main() {
+	var err error
+	// db, err = sql.Open("sqlserver", "sqlserver://sa:P@ssw0rd@13.76.163.73?database=techcoach")
+	db, err = sql.Open("mysql", "root:12345678@tcp(localhost:3306)/mockup_project")
+	if err != nil {
+		panic(err) //หยุดโปรแกรม
+	}
+
+	//Add
+	// newCover := Cover{9, "cover-jane"}
+	// err = AddCover(newCover)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	//Update
+	// cover := Cover{8, "cover-janejane"}
+	// err = UpdateCover(cover)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	//Delete
+	err = DeleteCover(8)
+	if err != nil {
+		panic(err)
+	}
+
+	covers, err := GetCovers()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for _, cover := range covers {
+		fmt.Println(cover)
+	}
+
+	// cover, err := GetCover(1)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// fmt.Println(cover)
+}
+
+func GetCovers() ([]Cover, error) {
+	err := db.Ping()
+	if err != nil {
+		return nil, err //return err ให้คนที่มาเรียกใช้ไป handle เอง
+	}
+
+	query := "select id, name from cover" //makesure ว่าจะได้ของตรง column
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close() //ปิดการอ่าน ใช้ defer ปิดสุดท้ายสุด
+
+	covers := []Cover{}
+	for rows.Next() { // ถ้ายังอ่าน rows ได้ ก็ทำต่อไปเรื่อยๆ
+		cover := Cover{}
+		err = rows.Scan(&cover.Id, &cover.Name)
+		if err != nil {
+			return nil, err
+		}
+		covers = append(covers, cover)
+	}
+
+	return covers, nil //สุดท้ายไม่มี error
+}
+
+func GetCover(id int) (*Cover, error) { //return เป็น pointer เพราะถ้ามีกรณีที่เป็น nil แล้ว type Cover ไม่มี จะใช้ไม่ได้
+	err := db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	query := "select id, name from cover where id=?" //ถ้า server db เป็น MS SQL จะใช้ param id=@id แทน
+	row := db.QueryRow(query, id)                    //MS SQL ใช้ db.QueryRow(query, sql.Named("id", id))
+
+	cover := Cover{}
+	err = row.Scan(&cover.Id, &cover.Name)
+	// Scan คือการอ่านค่าของตัวนั้นมา Scan copies the columns in the current row into the values pointed at by dest.
+	if err != nil {
+		return nil, err
+	}
+	return &cover, nil
+}
+
+func AddCover(cover Cover) error {
+	query := "insert into cover (id, name) values (?, ?)"
+	result, err := db.Exec(query, cover.Id, cover.Name)
+	if err != nil {
+		return err
+	}
+
+	affect, err := result.RowsAffected() // ค่า affect MySQL จะ return มาเป็นมากกว่า 0 ถ้าสำเร็จ
+	if err != nil {
+		return err
+	}
+	if affect <= 0 {
+		return errors.New("cannot insert")
+	}
+	return nil
+}
+
+func UpdateCover(cover Cover) error {
+	query := "update cover set name=? where id=?"
+	result, err := db.Exec(query, cover.Name, cover.Id) //สลับตำแหน่ง argument ด้วย
+	if err != nil {
+		return err
+	}
+
+	affect, err := result.RowsAffected() // ค่า affect MySQL จะ return มาเป็นมากกว่า 0 ถ้าสำเร็จ
+	if err != nil {
+		return err
+	}
+	if affect <= 0 {
+		return errors.New("cannot update")
+	}
+	return nil
+}
+
+func DeleteCover(id int) error {
+	query := "delete from cover where id=?"
+	result, err := db.Exec(query, id) //สลับตำแหน่ง argument ด้วย
+	if err != nil {
+		return err
+	}
+
+	affect, err := result.RowsAffected() // ค่า affect MySQL จะ return มาเป็นมากกว่า 0 ถ้าสำเร็จ
+	if err != nil {
+		return err
+	}
+	if affect <= 0 {
+		return errors.New("cannot delete")
+	}
+	return nil
+}

@@ -1,0 +1,26 @@
+#Prepare database
+--Server=localhose
+--Database=mockup_project
+--User=root
+--Password=12345678
+
+-----------
+
+CREATE TABLE cover (
+    id INTEGER NOT NULL,
+    name NVARCHAR(160) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+
+-----------
+
+INSERT INTO cover (id, name) VALUES (1, 'cover-lion');
+INSERT INTO cover (id, name) VALUES (2, 'cover-elephant');
+INSERT INTO cover (id, name) VALUES (3, 'cover-cheetar');
+INSERT INTO cover (id, name) VALUES (4, 'cover-zebra');
+INSERT INTO cover (id, name) VALUES (5, 'cover-buffalo');
+INSERT INTO cover (id, name) VALUES (6, 'cover-giraffe');
+INSERT INTO cover (id, name) VALUES (7, 'cover-gorilla');
+
+-----------
