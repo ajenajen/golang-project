@@ -17,8 +17,10 @@ func main() {
 		panic(err)
 	}
 
-	customerRepository := repository.NewCustomerRepositoryDB(db)
-	customerService := service.NewCustomerService(customerRepository)
+	customerRepositoryDB := repository.NewCustomerRepositoryDB(db)
+	customerRepositoryMock := repository.NewCustomerRepositoryMock() //ลองสลับไปใช้ data mockup ดูได้
+	_ = customerRepositoryMock
+	customerService := service.NewCustomerService(customerRepositoryDB)
 	customerHandler := handler.NewCustomerHandler(customerService)
 
 	// customers, err := customerRepository.GetAll()
