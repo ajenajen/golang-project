@@ -1,15 +1,16 @@
 syntax = "proto3";
 
 package services;
+option go_package="./services";
 
 service Calculator {
-    rpc Hello(HelloRequest) returns(HelloRessponse);
+    rpc Hello(HelloRequest) returns(HelloResponse); //ไปอยุที่ _grpc
 }
 
 message HelloRequest {
     string name = 1;
 }
 
-message HelloRessponse {
+message HelloResponse {
     string result = 1;
 }
