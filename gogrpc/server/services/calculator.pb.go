@@ -234,6 +234,100 @@ func (x *Person) GetCreatedDate() *timestamppb.Timestamp {
 	return nil
 }
 
+type FibonacciRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	N uint32 `protobuf:"varint,1,opt,name=n,proto3" json:"n,omitempty"`
+}
+
+func (x *FibonacciRequest) Reset() {
+	*x = FibonacciRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_calculator_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FibonacciRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FibonacciRequest) ProtoMessage() {}
+
+func (x *FibonacciRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_calculator_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FibonacciRequest.ProtoReflect.Descriptor instead.
+func (*FibonacciRequest) Descriptor() ([]byte, []int) {
+	return file_calculator_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *FibonacciRequest) GetN() uint32 {
+	if x != nil {
+		return x.N
+	}
+	return 0
+}
+
+type FibonacciResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result uint32 `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+}
+
+func (x *FibonacciResponse) Reset() {
+	*x = FibonacciResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_calculator_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FibonacciResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FibonacciResponse) ProtoMessage() {}
+
+func (x *FibonacciResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_calculator_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FibonacciResponse.ProtoReflect.Descriptor instead.
+func (*FibonacciResponse) Descriptor() ([]byte, []int) {
+	return file_calculator_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FibonacciResponse) GetResult() uint32 {
+	if x != nil {
+		return x.Result
+	}
+	return 0
+}
+
 var File_calculator_proto protoreflect.FileDescriptor
 
 var file_calculator_proto_rawDesc = []byte{
@@ -274,13 +368,22 @@ var file_calculator_proto_rawDesc = []byte{
 	0x6f, 0x75, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
 	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
 	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x32, 0x46, 0x0a, 0x0a, 0x43, 0x61, 0x6c,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x20, 0x0a, 0x10, 0x46, 0x69, 0x62,
+	0x6f, 0x6e, 0x61, 0x63, 0x63, 0x69, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0c, 0x0a,
+	0x01, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x01, 0x6e, 0x22, 0x2b, 0x0a, 0x11, 0x46,
+	0x69, 0x62, 0x6f, 0x6e, 0x61, 0x63, 0x63, 0x69, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
+	0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0x8e, 0x01, 0x0a, 0x0a, 0x43, 0x61, 0x6c,
 	0x63, 0x75, 0x6c, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x38, 0x0a, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f,
 	0x12, 0x16, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x48, 0x65, 0x6c, 0x6c,
 	0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69,
 	0x63, 0x65, 0x73, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x12, 0x46, 0x0a, 0x09, 0x46, 0x69, 0x62, 0x6f, 0x6e, 0x61, 0x63, 0x63, 0x69, 0x12, 0x1a,
+	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x46, 0x69, 0x62, 0x6f, 0x6e, 0x61,
+	0x63, 0x63, 0x69, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x73, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x46, 0x69, 0x62, 0x6f, 0x6e, 0x61, 0x63, 0x63, 0x69, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x30, 0x01, 0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -295,24 +398,28 @@ func file_calculator_proto_rawDescGZIP() []byte {
 	return file_calculator_proto_rawDescData
 }
 
-var file_calculator_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_calculator_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_calculator_proto_goTypes = []interface{}{
 	(*HelloRequest)(nil),          // 0: services.HelloRequest
 	(*HelloResponse)(nil),         // 1: services.HelloResponse
 	(*Person)(nil),                // 2: services.Person
-	nil,                           // 3: services.Person.CountriesEntry
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(Gender)(0),                   // 5: services.Gender
+	(*FibonacciRequest)(nil),      // 3: services.FibonacciRequest
+	(*FibonacciResponse)(nil),     // 4: services.FibonacciResponse
+	nil,                           // 5: services.Person.CountriesEntry
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(Gender)(0),                   // 7: services.Gender
 }
 var file_calculator_proto_depIdxs = []int32{
-	4, // 0: services.HelloRequest.created_date:type_name -> google.protobuf.Timestamp
-	5, // 1: services.Person.gender:type_name -> services.Gender
-	3, // 2: services.Person.countries:type_name -> services.Person.CountriesEntry
-	4, // 3: services.Person.created_date:type_name -> google.protobuf.Timestamp
+	6, // 0: services.HelloRequest.created_date:type_name -> google.protobuf.Timestamp
+	7, // 1: services.Person.gender:type_name -> services.Gender
+	5, // 2: services.Person.countries:type_name -> services.Person.CountriesEntry
+	6, // 3: services.Person.created_date:type_name -> google.protobuf.Timestamp
 	0, // 4: services.Calculator.Hello:input_type -> services.HelloRequest
-	1, // 5: services.Calculator.Hello:output_type -> services.HelloResponse
-	5, // [5:6] is the sub-list for method output_type
-	4, // [4:5] is the sub-list for method input_type
+	3, // 5: services.Calculator.Fibonacci:input_type -> services.FibonacciRequest
+	1, // 6: services.Calculator.Hello:output_type -> services.HelloResponse
+	4, // 7: services.Calculator.Fibonacci:output_type -> services.FibonacciResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
 	4, // [4:4] is the sub-list for extension extendee
 	0, // [0:4] is the sub-list for field type_name
@@ -361,6 +468,30 @@ func file_calculator_proto_init() {
 				return nil
 			}
 		}
+		file_calculator_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FibonacciRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_calculator_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FibonacciResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -368,7 +499,7 @@ func file_calculator_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_calculator_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

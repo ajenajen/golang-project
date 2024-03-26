@@ -8,6 +8,7 @@ option go_package="./services";
 
 service Calculator {
     rpc Hello(HelloRequest) returns(HelloResponse); //ไปอยุที่ _grpc
+    rpc Fibonacci(FibonacciRequest) returns(stream FibonacciResponse);
 }
 
 message HelloRequest {
@@ -29,4 +30,12 @@ message Person {
 	Gender gender = 7;
     map<string, string> countries = 8;
     google.protobuf.Timestamp created_date=9;   
+}
+
+message FibonacciRequest {
+    uint32 n = 1; 
+}
+
+message FibonacciResponse {
+    uint32 result = 1;
 }
