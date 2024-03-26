@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package services;
+option go_package="./services";
+
+enum Gender {
+	UNKNOWN = 0;  // เนื่องจากมันจะ index 0 เป็น default value แล้วเกิดอีกฝั่งไม่มี enum ตัวนี้ จะได้ไม่ผิด
+	MALE = 1;
+	FEMALE = 2;
+	NOT_PREFER = 3;
+}

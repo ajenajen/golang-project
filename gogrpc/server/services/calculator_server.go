@@ -15,7 +15,7 @@ func NewCalculatorServer() CalculatorServer {
 func (calculatorServer) mustEmbedUnimplementedCalculatorServer() {}
 
 func (calculatorServer) Hello(ctx context.Context, req *HelloRequest) (*HelloResponse, error) {
-	result := fmt.Sprintf("Hello %v", req.Name)
+	result := fmt.Sprintf("Hello %v at %v", req.Name, req.CreatedDate.AsTime().Local())
 	res := HelloResponse{
 		Result: result,
 	}

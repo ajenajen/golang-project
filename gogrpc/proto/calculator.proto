@@ -1,5 +1,8 @@
 syntax = "proto3";
 
+import "gender.proto";
+import "google/protobuf/timestamp.proto";
+
 package services;
 option go_package="./services";
 
@@ -8,9 +11,22 @@ service Calculator {
 }
 
 message HelloRequest {
-    string name = 1;
+    string name = 1; // 1 คือ tag
+    google.protobuf.Timestamp created_date=2;   
 }
 
 message HelloResponse {
-    string result = 1;
+    string result = 1; // 1 คือ tag
+}
+
+message Person {
+    string name = 1;
+    int32 age = 2;
+	float weight = 3;
+	double height = 4;
+	bool active = 5;
+	repeated string phone_number = 6;
+	Gender gender = 7;
+    map<string, string> countries = 8;
+    google.protobuf.Timestamp created_date=9;   
 }
