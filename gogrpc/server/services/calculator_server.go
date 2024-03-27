@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type calculatorServer struct {
@@ -17,6 +20,11 @@ func NewCalculatorServer() CalculatorServer {
 func (calculatorServer) mustEmbedUnimplementedCalculatorServer() {}
 
 func (calculatorServer) Hello(ctx context.Context, req *HelloRequest) (*HelloResponse, error) {
+	//return ด้วย grpc error
+	if req.Name == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "name is requires")
+	}
+
 	result := fmt.Sprintf("Hello %v at %v", req.Name, req.CreatedDate.AsTime().Local())
 	res := HelloResponse{
 		Result: result,
