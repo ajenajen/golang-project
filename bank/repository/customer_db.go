@@ -6,7 +6,7 @@ type customerRepositoryDB struct { //เป็นตัวเล็กเพร�
 	db *sqlx.DB
 }
 
-func NewCustomerRepositoryDB(db *sqlx.DB) customerRepositoryDB { // จาก main ให้มาเอาที่นี่แทน ใช้ในการ new instant ของ struct นี้ขึ้นมา
+func NewCustomerRepositoryDB(db *sqlx.DB) CustomerRepository { // จาก main ให้มาเอาที่นี่แทน ใช้ในการ new instant ของ struct นี้ขึ้นมา
 	return customerRepositoryDB{db: db}
 }
 
