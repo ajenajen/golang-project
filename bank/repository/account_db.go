@@ -34,10 +34,10 @@ func (r accountRepositoryDB) Create(acc Account) (*Account, error) {
 	return &acc, nil
 }
 
-func (r accountRepositoryDB) GetAll(CustomerID int) ([]Account, error) {
+func (r accountRepositoryDB) GetAll(customerID int) ([]Account, error) {
 	query := "select account_id, customer_id, opening_date, account_type, amount, status from accounts where customer_id=?"
 	accounts := []Account{}
-	err := r.db.Get(&accounts, query, CustomerID)
+	err := r.db.Get(&accounts, query, customerID)
 	if err != nil {
 		return nil, err
 	}

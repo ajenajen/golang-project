@@ -10,6 +10,6 @@ type Account struct {
 }
 
 type AccountRepository interface {
-	Create(acc Account) (*Account, error)
-	GetAll(CustomerID int) ([]Account, error) //int ของ CustomerID
+	Create(Account) (*Account, error)
+	GetAll(int) ([]Account, error) //int ของ CustomerID
 }
