@@ -2,10 +2,10 @@ package main
 
 import (
 	"bank/handler"
+	"bank/logs"
 	"bank/repository"
 	"bank/service"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -61,7 +61,11 @@ func main() {
 	// > curl localhost:8000/customers -i จะเห็น header ด้วย
 	router.HandleFunc("/customers/{customerID:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
 
-	log.Printf("Banking service started at port %v", viper.GetInt("app.port"))
+	// log.Printf("Banking service started at port %v", viper.GetInt("app.port"))
+	// logs.Log.Info("Banking service started at port " + viper.GetString("app.port"))
+	// package.Log ที่ var ไว้.[info,debug,error] โดยตัว Info รับแต่ strin เลยต้องแปลงเป็น string หมด
+	logs.Info("Banking service started at port " + viper.GetString("app.port"))
+
 	http.ListenAndServe(fmt.Sprintf(":%v", viper.GetInt("app.port")), router)
 
 }

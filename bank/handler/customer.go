@@ -21,8 +21,7 @@ func NewCustomerHandler(custService service.CustomerService) customerHandler {
 func (h customerHandler) GetCustomers(w http.ResponseWriter, r *http.Request) { // w=writer
 	customers, err := h.custService.GetCustomers()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintln(w, err)
+		handleError(w, err)
 		return
 	}
 
@@ -36,6 +35,14 @@ func (h customerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 
 	customer, err := h.custService.GetCustomer(customerID)
 	if err != nil {
+		// appErr, ok := err.(errs.AppError) //เช็คว่าใช่ err ตัวข้างหน้า ใช่ type errs.AppError ไหม
+		// if ok {
+		// 	w.WriteHeader(appErr.Code)
+		// 	fmt.Fprintln(w, appErr.Message)
+		// 	return
+		// }
+		handleError(w, err)
+
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintln(w, err)
 		return
