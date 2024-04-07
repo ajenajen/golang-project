@@ -3,7 +3,6 @@ package handler
 import (
 	"bank/service"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -43,8 +42,6 @@ func (h customerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 		// }
 		handleError(w, err)
 
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintln(w, err)
 		return
 	}
 

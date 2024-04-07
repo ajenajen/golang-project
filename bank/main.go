@@ -22,10 +22,14 @@ func main() {
 
 	db := initDatabase()
 	customerRepositoryDB := repository.NewCustomerRepositoryDB(db)
-	customerRepositoryMock := repository.NewCustomerRepositoryMock() //ลองสลับไปใช้ data mockup ดูได้
-	_ = customerRepositoryMock
+	// customerRepositoryMock := repository.NewCustomerRepositoryMock() //ลองสลับไปใช้ data mockup ดูได้
+	// _ = customerRepositoryMock
 	customerService := service.NewCustomerService(customerRepositoryDB)
 	customerHandler := handler.NewCustomerHandler(customerService)
+
+	accountRepositoryDB := repository.NewAccountRepositoryDB(db)
+	accountService := service.NewAccountService(accountRepositoryDB)
+	accountHandler := handler.NewAccountHandler(accountService)
 
 	// customers, err := customerRepository.GetAll()
 	// if err != nil {
@@ -60,6 +64,9 @@ func main() {
 	router.HandleFunc("/customers", customerHandler.GetCustomers).Methods(http.MethodGet) // test by > curl localhost:8000/customers
 	// > curl localhost:8000/customers -i จะเห็น header ด้วย
 	router.HandleFunc("/customers/{customerID:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
+
+	router.HandleFunc("/customers/{customerID:[0-9]+}/accounts", accountHandler.NewAccount).Methods(http.MethodPost)
+	router.HandleFunc("/customers/{customerID:[0-9]+}/accounts", accountHandler.GetAccounts).Methods(http.MethodGet)
 
 	// log.Printf("Banking service started at port %v", viper.GetInt("app.port"))
 	// logs.Log.Info("Banking service started at port " + viper.GetString("app.port"))
