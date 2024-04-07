@@ -10,7 +10,41 @@ import (
 )
 
 func main() {
+	app := fiber.New()
 
+	app.Post("/signup", Signup)
+	app.Post("/login", Login)
+	app.Get("/hello", Hello)
+
+	app.Listen(":8000")
+}
+
+func Signup(c *fiber.Ctx) error {
+	return nil
+}
+
+func Login(c *fiber.Ctx) error {
+	return nil
+}
+
+func Hello(c *fiber.Ctx) error {
+	return nil
+}
+
+type User struct {
+	Id       int    `db:"id" json:"id"`
+	Username string `db:"username" json:"username"`
+	Password string `db:"password" json:"password"`
+}
+
+type SignupRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 // Basic fiber
