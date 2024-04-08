@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"gorm.io/gorm/logger"
 )
 
@@ -35,8 +37,6 @@ func main() {
 		panic(err)
 	}
 
-	// db.Migrator().CreateTable(Test{}) // create table ให้เลย
-	// db.AutoMigrate(Gender{}, Test{}) // gorm จะเช็คก่อนว่ามี table เดิมอยู่ไหม ก่อนสร้าง จะไม่ error
 	// CreateGender("xxxx")
 	// GetGenders()
 	// GetGender(1)
@@ -85,6 +85,53 @@ func main() {
 
 	// GetTests()
 	//SELECT * FROM `MyTest` WHERE `MyTest`.`deleted_at` IS NULL
+
+	// CreateCustomer("Jane", 2)
+	GetCustomers()
+
+	// db.Migrator().CreateTable(Customer{}) // create table ให้เลย
+	// db.AutoMigrate(Gender{}, Test{}, Customer{}) // gorm จะเช็คก่อนว่ามี table เดิมอยู่ไหม ก่อนสร้าง จะไม่ error
+}
+
+type Customer struct {
+	gorm.Model
+	Name     string
+	Gender   Gender
+	GenderID uint
+} // CREATE TABLE `customers` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`name` longtext,`gender_id` bigint unsigned,PRIMARY KEY (`id`),INDEX `idx_customers_deleted_at` (`deleted_at`),CONSTRAINT `fk_customers_gender` FOREIGN KEY (`gender_id`) REFERENCES `genders`(`id`))
+
+func GetCustomers() {
+	customers := []Customer{}
+	// tx := db.Preload("Gender").Find(&customers)
+	// ` มันจะไปเอา gender มาก่อน
+	// SELECT * FROM `genders` WHERE `genders`.`id` IN (2,1)
+	// ===============================================
+	// SELECT * FROM `customers` WHERE `customers`.`deleted_at` IS NULL
+	// `
+	tx := db.Preload(clause.Associations).Find(&customers)
+	//clause.Associations อันนี้จะ preload ให้ทุกตัวเลย ไม่ต้องระบุ
+	if tx.Error != nil {
+		fmt.Println(tx.Error)
+		return
+	}
+
+	for _, c := range customers {
+		fmt.Printf("%v|%v|%v \n", c.ID, c.Name, c.Gender.Name)
+	}
+	// fmt.Println(customers)
+}
+
+func CreateCustomer(name string, genderID uint) {
+	customer := Customer{
+		Name:     name,
+		GenderID: genderID,
+	}
+	tx := db.Create(&customer)
+	if tx.Error != nil {
+		fmt.Println(tx.Error)
+		return
+	}
+	fmt.Println(customer)
 }
 
 func GetGenders() {
@@ -136,8 +183,9 @@ func UpdateGender(id uint, name string) {
 }
 
 func UpdateGender2(id uint, name string) {
-	gender := Gender{Name: name}                                // update แบบนี้ ค่าเดิมต้องไม่ใช่ 0 ด้วย
-	tx := db.Model(&Gender{}).Where("id=?", id).Updates(gender) //ต้องระบุ struct ที่จะอัพเดทเข้าไปที่ model
+	gender := Gender{Name: name} // update แบบนี้ ค่าเดิมต้องไม่ใช่ 0 ด้วย
+	// tx := db.Model(&Gender{}).Where("id=?", id).Updates(gender)                        //ต้องระบุ struct ที่จะอัพเดทเข้าไปที่ model
+	tx := db.Model(&Gender{}).Where("id=@myid", sql.Named("myid", id)).Updates(gender) //ใช้แบบ @Name ก็จะได้ไม่ต้องมานับว่าอันไหนตำแหน่งไหน
 	if tx.Error != nil {
 		fmt.Println(tx.Error)
 		return
