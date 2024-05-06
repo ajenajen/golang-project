@@ -1,6 +1,7 @@
 package handlers_test
 
 import (
+	"errors"
 	"fmt"
 	"gotest/handlers"
 	"gotest/services"
@@ -40,6 +41,53 @@ func TestPromotionCalculateDiscount(t *testing.T) {
 			body, _ := io.ReadAll(res.Body) //res.Body เป็น io.ReadCloser, body return เป็น slice of byte
 			assert.Equal(t, strconv.Itoa(expected), string(body))
 		}
+	})
 
+	t.Run("fail strconv error", func(t *testing.T) {
+		// Arrange
+		amount := "abc"
+		expected := 80
+
+		promoService := services.NewPromotionServiceMock()
+		promoService.On("CalculateDiscount", amount).Return(expected, errors.New(""))
+
+		promoHandler := handlers.NewPromotionHandler(promoService)
+
+		//http://localhost:8000/calculate?amount=100
+		app := fiber.New()
+		app.Get("/calculate", promoHandler.CalculateDiscount)
+
+		req := httptest.NewRequest("GET", fmt.Sprintf("/calculate?amount=%v", amount), nil)
+
+		//Act
+		res, _ := app.Test(req)
+		defer res.Body.Close()
+
+		//Assert
+		assert.Equal(t, fiber.StatusBadRequest, res.StatusCode)
+	})
+
+	t.Run("fail service error", func(t *testing.T) {
+		// Arrange
+		amount := 100
+		expected := 80
+
+		promoService := services.NewPromotionServiceMock()
+		promoService.On("CalculateDiscount", amount).Return(expected, errors.New(""))
+
+		promoHandler := handlers.NewPromotionHandler(promoService)
+
+		//http://localhost:8000/calculate?amount=100
+		app := fiber.New()
+		app.Get("/calculate", promoHandler.CalculateDiscount)
+
+		req := httptest.NewRequest("GET", fmt.Sprintf("/calculate?amount=%v", amount), nil)
+
+		//Act
+		res, _ := app.Test(req)
+		defer res.Body.Close()
+
+		//Assert
+		assert.Equal(t, fiber.StatusNotFound, res.StatusCode)
 	})
 }
